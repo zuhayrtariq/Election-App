@@ -6,7 +6,7 @@ const sql = require("mssql");
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 const ActiveDirectory = require("activedirectory");
-const { getEmployeeDetails, insertVote, getVoteCasted, candidateVotes, votesSummary } = require("./queries");
+const { getEmployeeDetails, insertVote, getVoteCasted, candidateVotes, votesSummary, totalVoteCasted } = require("./queries");
 const port = 4000;
 const SECRET_KEY = "JWTSecret";
 require("dotenv").config();
@@ -24,7 +24,10 @@ app.use(
       process.env.CLIENT_URL,
       "http://localhost:5173",
       "http://10.159.102.58:5173",
-      'http://10.159.97.2:5173'
+      
+      "http://localhost:5174",
+      'http://10.159.97.2:5173',
+      'http://10.159.97.2:5174'
     ],
     credentials: true,
   })
@@ -169,6 +172,11 @@ const result = await candidateVotes(candidateId);
 
 res.json(result)
 });
+
+app.get("/vote-casted", async (req, res) => {
+  const result = await totalVoteCasted()
+  res.json(result)
+  });
 
 app.get("/votes-data", async (req, res) => {
   const {positionId} = req.query;
