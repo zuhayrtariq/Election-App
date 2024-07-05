@@ -10,7 +10,7 @@ const ExecutivePieChart = () => {
   const getCoffExpData = async () => {
     
     const { data } = await axios.get("/votes-data?positionId=5");
-    console.log(data)
+   
     const updatedData = data.map((x, i) => {
       return{
           id: i,
@@ -45,7 +45,7 @@ const ExecutivePieChart = () => {
     <div className=" w-full h-full">
       {loadedData ? (
         <PieChart
-        //   colors={["green", "red"]}
+           colors={["#379F2E", "#89C54A", "green", "cyan", "lightblue", "orange", "grey", "yellow"]}
           series={[
             {
               data: votersData,

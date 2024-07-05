@@ -3,7 +3,7 @@ import { FaCrown } from 'react-icons/fa'
 
 const LeadingCrown = () => {
   return (
-    <div><img src="/crown-2.png" className='pb-1' alt="Crown" width={80} /></div>
+    <div><img src="/crown-2.png" className='' alt="Crown" width={40} /></div>
   )
 }
 

@@ -1,0 +1,5 @@
+
+.MuiBarLabel-root{
+    font-size: 200px;
+    @apply font-primeFont 
+  }

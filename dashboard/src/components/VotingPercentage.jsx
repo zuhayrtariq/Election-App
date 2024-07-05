@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Stats } from "react-daisyui";
 
-const TotalVotes = () => {
+const VotingPercentage = () => {
   const [value, setValue] = useState(0);
   const [voteCasted, setVoteCasted] = useState(0);
 
@@ -36,17 +36,21 @@ const TotalVotes = () => {
     <>
       <div className="stats shadow  ">
         <div className="stat bg-primary text-white py-1 px-4">
-          <div className="stat-title font-bold text-white text-2xl">
-            Turnover
+          <div className="stat-title font-bold text-2xl text-white">
+           Turnover %
           </div>
-          <div className="stat-value text-center text-white">{voteCasted}</div>
+          <div className="stat-value text-center text-white">
+          {((voteCasted / totalVotes) * 100).toFixed(2)
+          }
+          </div>
         </div>
         <div className="stat bg-primary text-primary-content py-1 px-4">
-          <div className="stat-title font-bold text-primary-content text-2xl">
-            Remaining
+          <div className="stat-title text-2xl font-bold text-primary-content">
+            Remaining %
           </div>
           <div className="stat-value text-center">
-            {totalVotes - voteCasted}
+          {((( totalVotes - voteCasted)/totalVotes) * 100).toFixed(2)
+          }
           </div>
         </div>
       </div>
@@ -54,4 +58,4 @@ const TotalVotes = () => {
   );
 };
 
-export default TotalVotes;
+export default VotingPercentage;

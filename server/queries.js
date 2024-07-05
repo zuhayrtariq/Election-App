@@ -41,23 +41,19 @@ const insertRecordQuery = async (query) => {
 };
 
 const getEmployeeDetails = async (id) => {
-  const query = `SELECT * FROM Voters WHERE id = '${id}'`;
+  const query = `SELECT * FROM VotersT WHERE id = '${id}'`;
   return await getSingleQueryResult(query);
 };
 const getVoteCasted = async (id) => {
-  const query = `Select COUNT(*) as totalVotes from VotesCount Where voterId = '${id}'`;
+  const query = `Select COUNT(*) as totalVotes from VotesT Where voterId = '${id}'`;
 
   return await getSingleQueryResult(query);
 };
 
-const totalVotes = async () => {
-  const query = `Select COUNT(*) as totalVotes from VotesCount`;
-  return await getSingleQueryResult(query);
-};
 const candidateVotes = async (candidateId) => {
-  const query = `SELECT T0.Id, T0.Name, Count(T1.VoterId) 'Votes'
-FROM Candidates T0
-LEFT JOIN VotesCount T1 ON T1.CandidateId = T0.Id
+  const query = `SELECT T0.candidateId, T0.name, Count(T1.VoterId) 'totalVotes'
+FROM CandidatesT T0
+LEFT JOIN VotesT T1 ON T1.candidateId = T0.candidateId
 Where T0.Id = '${candidateId}'
 GROUP BY T0.Id, T0.Name
     `;
@@ -67,32 +63,32 @@ GROUP BY T0.Id, T0.Name
 const votesSummary = async (positionId) => {
   let query = "";
   if (positionId)
-    query = `SELECT T2.Description, T1.id, T1.Name, CoUNT(T0.VoterId) 'Votes'
-FROM Candidates T1 
-Left join VotesCount T0 ON T1.id = T0.candidateId
-LEFT JOIN Positions T2 ON T2.Id = T1.Position
+    query = `SELECT T2.position, T1.candidateId, T1.name,T1.designation,T1.imgUrl, COUNT(T0.VoterId) 'totalVotes'
+FROM CandidatesT T1 
+Left join VotesT T0 ON T1.candidateId = T0.candidateId
+LEFT JOIN PositionsT T2 ON T2.id = T1.positionId
 Where T2.id = ${positionId}
-Group By T1.Name, T1.id, T2.Description, T0.CandidateId,T2.id
+Group By T1.name, T1.candidateId, T2.position, T0.candidateId,T2.id,T1.designation,T1.imgUrl
 Order by T2.id ASC, COUNT(T0.VoterId) DESC`;
   else
-    query = `SELECT T2.Description, T1.id, T1.Name, CoUNT(T0.VoterId) 'Votes'
-FROM Candidates T1 
-Left join VotesCount T0 ON T1.id = T0.candidateId
-LEFT JOIN Positions T2 ON T2.Id = T1.Position
-Group By T1.Name, T1.id, T2.Description, T0.CandidateId,T2.id
+    query = `SELECT T2.position, T1.candidateId, T1.name,T1.designation,T1.imgUrl, COUNT(T0.VoterId) 'totalVotes'
+FROM CandidatesT T1 
+Left join VotesT T0 ON T1.candidateId = T0.candidateId
+LEFT JOIN PositionsT T2 ON T2.id = T1.positionId
+Group By T1.name, T1.candidateId, T2.position, T0.candidateId,T2.id,T1.designation,T1.imgUrl
 Order by T2.id ASC, COUNT(T0.VoterId) DESC`;
   const result = await getQueryResult(query);
   return result;
 };
 
 const totalVoteCasted = async () => {
-  const query = `SELECT COUNT(DISTINCT VoterId) as votesCasted FROM VotesCount`;
+  const query = `SELECT COUNT(DISTINCT VoterId) as votesCasted FROM VotesT`;
   const result = await getSingleQueryResult(query);
   return result;
 };
 
 const insertVote = async (voterId, candidateId) => {
-  const query = `INSERT INTO VotesCount(voterId,candidateId) VALUES ('${voterId}','${candidateId}')`;
+  const query = `INSERT INTO VotesT(voterId,candidateId) VALUES ('${voterId}','${candidateId}')`;
   return await insertRecordQuery(query);
 };
 
@@ -100,7 +96,6 @@ module.exports = {
   getEmployeeDetails,
   insertVote,
   getVoteCasted,
-  totalVotes,
   candidateVotes,
   votesSummary,
   totalVoteCasted,

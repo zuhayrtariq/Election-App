@@ -23,6 +23,8 @@ app.use(
     origin: [
       process.env.CLIENT_URL,
       "http://localhost:5173",
+      'http://10.159.102.58:5173',
+      'http://10.159.102.58:5174',
       "http://10.159.102.58:5173",
       
       "http://localhost:5174",
@@ -36,9 +38,6 @@ app.use(
 const authConfig = {
   url: "ldap://prime.net",
   baseDN: "DisOU=PrimeUsers,DC=Prime,DC=net",
-};
-const verifyToken = (token) => {
-  return jwt.verify(token, SECRET_KEY);
 };
 
 app.post("/login", async (req, res) => {
@@ -155,8 +154,13 @@ app.post("/proxy-login", async (req, res) => {
   });
 });
 
-app.post("/logout", async (req, res) => {
-  res.cookie("token", " ", { maxAge: 0, overwrite: true }).json(true);
+app.post("/test-login", async (req, res) => {
+  let { username, password } = req.body;
+  console.log(username);
+  const result = await getEmployeeDetails("test")
+  console.log(result)
+  res.json(result)
+  return ;
 });
 
 app.post("/vote", async (req, res) => {
@@ -166,14 +170,9 @@ app.post("/vote", async (req, res) => {
     await insertVote(username, votes[i]);
   }
 });
+
+
 app.get("/total-votes", async (req, res) => {
-const {candidateId} = req.query;
-const result = await candidateVotes(candidateId);
-
-res.json(result)
-});
-
-app.get("/vote-casted", async (req, res) => {
   const result = await totalVoteCasted()
   res.json(result)
   });
@@ -183,6 +182,14 @@ app.get("/votes-data", async (req, res) => {
   const result = await votesSummary(positionId)
   res.json(result)
 });
+
+app.get("/user-vote", async (req, res) => {
+  const {candidateId} = req.query;
+  const result = await candidateVotes(candidateId);
+  
+  res.json(result)
+  });
+
 app.get("/winners", async (req, res) => {
   const {positionId} = req.query;
   const result = await votesSummary(positionId)

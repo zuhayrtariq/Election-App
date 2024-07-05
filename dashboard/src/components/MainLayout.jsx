@@ -1,39 +1,45 @@
-import React, { useEffect, useState } from 'react'
-import VicePresidentDiv from '../CandidateDivs/VicePresidentDiv'
-import PresidentDiv from '../CandidateDivs/PresidentDiv'
-import GeneralDiv from '../CandidateDivs/GeneralDiv'
-import ExecutivePieChart from '../charts/ExecutivePieChart'
-import axios from 'axios'
-import ContestDiv from '../CandidateDivs/ContestDiv'
+import React, { useEffect, useState } from "react";
+import VicePresidentDiv from "../CandidateDivs/VicePresidentDiv";
+import PresidentDiv from "../CandidateDivs/PresidentDiv";
+import GeneralDiv from "../CandidateDivs/GeneralDiv";
+import ExecutivePieChart from "../charts/ExecutivePieChart";
+import axios from "axios";
+import ContestDiv from "../CandidateDivs/ContestDiv";
+import ExecutiveDiv from "../CandidateDivs/ExecutiveDiv";
 
 const MainLayout = () => {
   const [value, setValue] = useState(0);
   const [votesData, setVotesData] = useState([]);
 
   const [loadedData, setLoadedData] = useState(false);
-  const [presidentData,setPresidentData] = useState([]);
-  const [VicePresidentData,setVicePresidentData] = useState([]);
-  const [generalSecretaryData,setGeneralSecretaryData] = useState([]);
-  
-  const getTotalVotesData= async () => {
-    const { data } = await axios.get("/votes-data");
-    console.log(data);
-    
-    let tempData = data.filter(x=>x.Description == 'President')
-    setPresidentData([...tempData])
-    tempData = data.filter(x=>x.Description == 'Vice President')
-    setVicePresidentData([...tempData])
+  const [presidentData, setPresidentData] = useState([]);
+  const [VicePresidentData, setVicePresidentData] = useState([]);
+  const [generalSecretaryData, setGeneralSecretaryData] = useState([]);
+  const [treasurerData, setTreasurerData] = useState([]);
+  const [executiveData, setExecutiveData] = useState([]);
 
-    tempData = data.filter(x=>x.Description == 'General Secretary');
-    setGeneralSecretaryData([...tempData])
-    console.log(tempData)
+  const getTotalVotesData = async () => {
+    const { data } = await axios.get("/votes-data");
+    
+    let tempData = data.filter((x) => x.position == "President");
+    setPresidentData([...tempData]);
+    tempData = data.filter((x) => x.position == "Vice President");
+    setVicePresidentData([...tempData]);
+
+    tempData = data.filter((x) => x.position == "General Secretary");
+    setGeneralSecretaryData([...tempData]);
+
+    tempData = data.filter((x) => x.position == "Treasurer");
+    setTreasurerData([...tempData]);
+
+    tempData = data.filter((x) => x.position == "Executive Member");
+    setExecutiveData([...tempData]);
     setVotesData(data);
   };
   useEffect(() => {
     (async () => {
       await getTotalVotesData();
       setLoadedData(true);
-      
     })();
   }, []);
 
@@ -50,34 +56,36 @@ const MainLayout = () => {
     };
   }, [value]);
 
-  if(!loadedData)
-    {
-      return <>Loading</>
-    }
+  if (!loadedData) {
+    return <>Loading</>;
+  }
 
   return (
-    <div className='grid grid-cols-2 grid-rows-3 gap-x-4 gap-y-1 bg-white grid-flow-col w-full h-full'>
+    <div className="grid grid-cols-2 grid-rows-3 gap-x-4 gap-y-1 grid-flow-col w-full h-full">
+      <div className="w-full h-full flex items-center justify-center  rounded-lg overflow-hidden">
+        <ContestDiv data={presidentData}/>
+      </div>
+      <div className="rounded-lg w-full h-full flex items-center justify-center ">
+      <ContestDiv data={generalSecretaryData} heading="General Secretary"/>
+      </div>
+      <div className="rounded-lg w-full h-full flex items-center justify-center  ">
+        <ContestDiv data={treasurerData} heading="Treasurer"/>
+      </div>
 
-<div className='w-full h-full flex items-center justify-center bg-secondary rounded-lg overflow-hidden'><PresidentDiv data={presidentData}/></div>
-<div className='rounded-lg w-full h-full flex items-center justify-center bg-primary'><ContestDiv data={VicePresidentData}/></div>
-<div className='rounded-lg w-full h-full flex items-center justify-center bg-secondary '><ContestDiv data={generalSecretaryData}/></div>
-
-<div className='w-full h-full flex items-center justify-center row-span-3 bg-red-100'>
- <div className='grid w-full h-full grid-rows-3'>
-
-<div>World</div>
-<div className='row-span-2 '>
-  <div className='w-full h-full flex items-center justify-center pr-8 bg-blue-200'>
-  <ExecutivePieChart/>
-  </div>
-  </div>
-
- </div>
-
-  </div>
-
+      <div className=" row-span-3  ">
+        <div className="rounded-lg grid gap-y-1 gap-x-4  grid-flow-col w-full h-full grid-rows-3">
+        <div className="rounded-lg w-full h-full flex items-center justify-center  overflow-hidden ">
+        <ContestDiv data={VicePresidentData} heading="Vice President"/>
+      </div>
+          <div className="row-span-2 ">
+            <div className="rounded-lg w-full h-full flex items-center justify-center  overflow-hidden">
+            <ExecutiveDiv data={executiveData} heading="Executive Members"/>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default MainLayout
+export default MainLayout;

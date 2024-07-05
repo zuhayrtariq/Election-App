@@ -4,6 +4,7 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import DashboardPage from './DashboardPage'
 import axios from 'axios'
+// axios.defaults.baseURL = `http://10.159.102.58:4000`
 axios.defaults.baseURL = `http://10.159.97.2:4000` 
  axios.defaults.withCredentials = true;
 function App() {

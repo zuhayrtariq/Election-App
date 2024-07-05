@@ -17,6 +17,7 @@
     "@react-three/drei": "^9.107.1",
     "@react-three/fiber": "^8.16.8",
     "@reduxjs/toolkit": "^2.2.6",
+    "dotenv": "^16.4.5",
     "leva": "^0.9.35",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

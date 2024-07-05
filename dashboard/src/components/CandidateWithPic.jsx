@@ -1,20 +1,20 @@
 import React from 'react'
 
-const CandidateWithPic = ({name = "Furqan Ullah",designation = "C&P Team Leader", votes = '100', winner = false}) => {
+const CandidateWithPic = ({name = "Furqan Ullah",designation = "C&P Team Leader", votes = '100',imgUrl = '', winner = false}) => {
   return (
     <div className={`card bg-base-100  shadow-xl w-full ${winner && 'border-4 border-primary-content'}`}>
 <div className='flex'>
 <figure className="pl-4">
   <img
-    src="/images/FurqanUllah.jpg"
-    alt="Shoes"
-    className="rounded-xl w-[100px] h-[100px]" />
+    src={`/images/${imgUrl}`}
+    alt={`${name} img`} 
+    className="rounded-xl w-[70px] h-[70px]" />
 </figure>
 <div className="card-body p-4 items-center text-center">
-  <h2 className="card-title">{name}</h2>
-  <p>{designation}</p>
+  <h2 className="card-titlews">{name}</h2>
+  {/* <p className='tracking-tighter w-full text-truncate'>{designation}</p> */}
   <div className="card-actions">
-    <button className="btn btn-primary text-white text-xl">{votes} Votes</button>
+    <button className="btn btn-primary text-white btn-xs">{votes} Votes</button>
   </div>
 </div>
 </div>
