@@ -9,3 +9,8 @@
 *{
     @apply font-primeFont text-primary-content
 }
+
+.equal-icon
+{
+  @apply text-primary
+}

@@ -8,9 +8,9 @@ const Navbar = () => {
         <div className='flex absolute w-[97vw]  overflow-hidden items-center justify-center '>
             <p className='text-5xl font-primeFont text-[#40403f] pt-2 '>Social Club Election 2024</p>
         </div>
-        <div className='flex items-center justify-center mr-4 p-2 bg-secondary rounded-full'>
-            <p className='text-base text-center badge badge-secondary p-2 '> <span className='pt-1 text-white'>Admin Panel</span></p>
-        </div>
+        {/* <div className='flex items-center justify-center mr-4 p-2 bg-secondary rounded-full'>
+            <p className='text-base text-center badge badge-secondary p-2 '> <span className='pt-1 text-white'>Committee Dashboard</span></p>
+        </div> */}
     </div>
   )
 }

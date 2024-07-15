@@ -13,7 +13,7 @@ const Header = () => {
     <div className='flex w-full overflow-hidden justify-between items-center h-16'> 
     <Navbar/>
     </div>
-    <div className='w-full   grid grid-cols-3  h-20'>
+    <div className='w-full   grid grid-cols-3 h-16 2xl:h-20'>
 
 <div className='flex items-center justify-center pl-2'><VotingPercentage/></div>
 <div className=' flex items-center justify-center'><DateCountdown/></div>

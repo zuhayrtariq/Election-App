@@ -1,20 +1,29 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import DashboardPage from './DashboardPage'
-import axios from 'axios'
-// axios.defaults.baseURL = `http://10.159.102.58:4000`
-axios.defaults.baseURL = `http://10.159.97.2:4000` 
- axios.defaults.withCredentials = true;
+import { useContext, useEffect, useState } from "react";
+import reactLogo from "./assets/react.svg";
+import viteLogo from "/vite.svg";
+import "./App.css";
+import DashboardPage from "./DashboardPage";
+import axios from "axios";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import LoginPage from "./LoginPage";
+import { Toaster } from "react-hot-toast";
+import { DataContext } from "./DataContext";
+axios.defaults.baseURL = `http://10.159.98.132:4000`;
+axios.defaults.withCredentials = true;
 function App() {
-  const [count, setCount] = useState(0)
+
 
   return (
-    <>
-    <DashboardPage/>
-    </>
-  )
+    <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/dashboard" element={<DashboardPage />} />
+          {/* <DashboardPage/> */}
+        </Routes>
+       
+      <Toaster />
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;

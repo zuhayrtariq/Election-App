@@ -87,6 +87,23 @@ const totalVoteCasted = async () => {
   return result;
 };
 
+const VotersVoteCasted = async () => {
+  const query = `SELECT DISTINCT T0.voterId, (SELECT name from VotersT Where id = T0.voterId ) 'name', 
+Convert(varchar,(SELECT Top 1 addedOn from VotesT T1 Where T1.voterId = T0.voterId),100) 'addedOn',
+(SELECT Top 1 addedOn from VotesT T1 Where T1.voterId = T0.voterId) 'voteTime', 
+(SELECT designation from VotersT Where id = T0.voterId ) 'designation'
+FROM VotesT T0 ORDER BY voteTime ASC
+`;
+  const result = await getQueryResult(query);
+  return result;
+};
+
+const VotersVoteRemaining = async () => {
+  const query = `SELECT T0.id, T0.name, T0.designation From VotersT T0 LEFT JOIN VotesT T1 ON T1.voterId = T0.id Where T1.voterId is null`;
+  const result = await getQueryResult(query);
+  return result;
+};
+
 const insertVote = async (voterId, candidateId) => {
   const query = `INSERT INTO VotesT(voterId,candidateId) VALUES ('${voterId}','${candidateId}')`;
   return await insertRecordQuery(query);
@@ -97,6 +114,7 @@ module.exports = {
   insertVote,
   getVoteCasted,
   candidateVotes,
-  votesSummary,
+  votesSummary,VotersVoteCasted,
   totalVoteCasted,
+  VotersVoteRemaining
 };

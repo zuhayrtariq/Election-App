@@ -17,7 +17,7 @@ const HomePage = () => {
     if (proxyFlag == false) {
       const { data } = await userLoginFunc({ username, password });
 
-      if (data != "422" && data != "111") {
+      if (data != "422" && data != "111" && data!='99') {
         toast.success("Welcome " + data.name);
         console.log(data);
         sessionStorage.setItem("userDetails", JSON.stringify(data));
@@ -29,11 +29,15 @@ const HomePage = () => {
       if (data == "111") {
         toast.error("Vote Already Casted");
       }
+      if (data == "99") {
+        toast.error("Please go to boardroom to cast your vote.");
+        
+      }
     }
     if (proxyFlag == true) {
       const { data } = await userProxyLoginFunc({ username, password });
 
-      if (data != "422" && data != "111" && data != "500") {
+      if (data != "422" && data != "111" && data != "500" && data!='99') {
         toast.success("Welcome " + data.name);
         console.log(data);
         sessionStorage.setItem("userDetails", JSON.stringify(data));
@@ -47,6 +51,9 @@ const HomePage = () => {
       }
       if (data == "500") {
         toast.error("No Proxy Found");
+      }
+      if (data == "99") {
+        toast.error("Please go to boardroom to cast your vote.")
       }
     }
   };
